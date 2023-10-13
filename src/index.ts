@@ -1,5 +1,7 @@
 import { createUnplugin } from 'unplugin'
 
+import { generateIconSetsCss } from './helpers/generate'
+
 import type { UnpluginFactory } from 'unplugin'
 import type { Options } from './types'
 
@@ -7,11 +9,12 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (
   options,
 ) => ({
   name: 'unplugin-iconify',
-  transformInclude(id) {
-    return id.endsWith('main.ts')
-  },
-  transform(code) {
-    return code.replace('__UNPLUGIN__', `Hello Unplugin! ${options}`)
+  buildStart: () => {
+    const { cssGenerators = [] } = options || {}
+
+    cssGenerators.forEach((cssGenerator) => {
+      generateIconSetsCss(cssGenerator)
+    })
   },
 })
 
