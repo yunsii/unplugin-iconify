@@ -18,7 +18,10 @@
     "vite",
     "webpack",
     "rollup",
-    "transform"
+    "transform",
+    "iconify",
+    "css-icons",
+    "css-generators"
   ],
   "exports": {
     ".": {
