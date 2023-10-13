@@ -1,8 +1,12 @@
 # unplugin-iconify
 
-[![NPM version](https://img.shields.io/npm/v/unplugin-iconify?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-iconify)
+[Unplugin](https://github.com/unjs/unplugin) for [iconify](https://iconify.design/).
 
-Starter template for [unplugin](https://github.com/unjs/unplugin).
+[![NPM version](https://img.shields.io/npm/v/unplugin-iconify?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-iconify) [![Download monthly](https://img.shields.io/npm/dm/unplugin-iconify.svg)](https://www.npmjs.com/package/unplugin-iconify)
+
+## Features
+
+- ✨ `cssGenerators` - Easy to generate icons CSS as your expected
 
 ## Install
 
