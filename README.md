@@ -1,27 +1,13 @@
-# unplugin-starter
+# unplugin-iconify
 
-[![NPM version](https://img.shields.io/npm/v/unplugin-starter?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-starter)
+[![NPM version](https://img.shields.io/npm/v/unplugin-iconify?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-iconify)
 
 Starter template for [unplugin](https://github.com/unjs/unplugin).
-
-## Template Usage
-
-To use this template, clone it down using:
-
-```bash
-npx degit yunsii/unplugin-starter my-unplugin
-```
-
-And do a global replacement of `unplugin-starter` with your plugin name.
-
-Then you can start developing your unplugin 🔥
-
-To test your plugin, run: `pnpm run dev` To release a new version, run: `pnpm run release`
 
 ## Install
 
 ```bash
-npm i unplugin-starter
+npm i unplugin-iconify
 ```
 
 <details>
@@ -29,7 +15,7 @@ npm i unplugin-starter
 
 ```ts
 // vite.config.ts
-import starter from 'unplugin-starter/vite'
+import starter from 'unplugin-iconify/vite'
 
 export default defineConfig({
   plugins: [
@@ -49,7 +35,7 @@ Example: [`playground/`](./playground/)
 
 ```ts
 // rollup.config.js
-import starter from 'unplugin-starter/rollup'
+import starter from 'unplugin-iconify/rollup'
 
 export default {
   plugins: [
@@ -70,7 +56,7 @@ export default {
 module.exports = {
   /* ... */
   plugins: [
-    require('unplugin-starter/webpack')({
+    require('unplugin-iconify/webpack')({
       /* options */
     }),
   ],
@@ -87,7 +73,7 @@ module.exports = {
 export default defineNuxtConfig({
   modules: [
     [
-      'unplugin-starter/nuxt',
+      'unplugin-iconify/nuxt',
       {
         /* options */
       },
@@ -108,7 +94,7 @@ export default defineNuxtConfig({
 module.exports = {
   configureWebpack: {
     plugins: [
-      require('unplugin-starter/webpack')({
+      require('unplugin-iconify/webpack')({
         /* options */
       }),
     ],
@@ -124,7 +110,7 @@ module.exports = {
 ```ts
 // esbuild.config.js
 import { build } from 'esbuild'
-import starter from 'unplugin-starter/esbuild'
+import starter from 'unplugin-iconify/esbuild'
 
 build({
   plugins: [starter()],

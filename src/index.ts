@@ -6,7 +6,7 @@ import type { Options } from './types'
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (
   options,
 ) => ({
-  name: 'unplugin-starter',
+  name: 'unplugin-iconify',
   transformInclude(id) {
     return id.endsWith('main.ts')
   },
