@@ -1,6 +1,7 @@
 import { getIconsCSS } from '@iconify/utils'
 import fse from 'fs-extra'
 import pathe from 'pathe'
+import { IconSet } from '@iconify/tools'
 
 import { ensureLoadIconSet } from './loader'
 
@@ -34,12 +35,15 @@ export function generateIconSetsCss(cssGenerator: CssGenerator) {
       })
     } else {
       Object.keys(iconifyIcons).forEach((prefix) => {
-        const iconSet = ensureLoadIconSet(prefix, { iconSets: iconifyJSONs })
+        const iconSetJson = ensureLoadIconSet(prefix, {
+          iconSets: iconifyJSONs,
+        })
+        const iconSet = new IconSet(iconSetJson)
         const iconNames = iconifyIcons[prefix as keyof typeof iconifyIcons]
         const css = getIconsCSS(
-          iconSet,
+          iconSetJson,
           iconNames instanceof RegExp
-            ? Object.keys(iconSet.icons).filter((item) => {
+            ? iconSet.list(['icon', 'variation']).filter((item) => {
                 return iconNames.test(item)
               })
             : iconNames,
