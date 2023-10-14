@@ -122,3 +122,11 @@ build({
 ```
 
 <br></details>
+
+## Related
+
+- [tailwindcss-plugin-iconify](https://github.com/yunsii/tailwindcss-plugin-iconify) - Use any SVG icon powered by Iconify for Tailwind CSS, easy to use local icons and figma icons in particular.
+
+## License
+
+[MIT](./LICENSE) License © 2023 [Yuns](https://github.com/yunsii)
