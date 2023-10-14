@@ -9,12 +9,7 @@ import type { IconCSSIconSetOptions } from '@iconify/utils/lib/css/types'
 import type { CssGenerator } from '../types'
 
 export function generateIconSetsCss(cssGenerator: CssGenerator) {
-  const {
-    iconifyJSONs = {},
-    iconifyIcons,
-    iconSelector,
-    outputPath,
-  } = cssGenerator
+  const { iconSets = {}, exportIcons, iconSelector, outputPath } = cssGenerator
 
   const getIconsCSSOptions: IconCSSIconSetOptions = {
     iconSelector,
@@ -22,10 +17,10 @@ export function generateIconSetsCss(cssGenerator: CssGenerator) {
 
   let cssCode = ''
 
-  if (iconifyIcons) {
-    if (Array.isArray(iconifyIcons)) {
-      iconifyIcons.forEach((prefix) => {
-        const iconSet = ensureLoadIconSet(prefix, { iconSets: iconifyJSONs })
+  if (exportIcons) {
+    if (Array.isArray(exportIcons)) {
+      exportIcons.forEach((prefix) => {
+        const iconSet = ensureLoadIconSet(prefix, { iconSets })
         const css = getIconsCSS(
           iconSet,
           Object.keys(iconSet.icons),
@@ -34,12 +29,12 @@ export function generateIconSetsCss(cssGenerator: CssGenerator) {
         cssCode += css
       })
     } else {
-      Object.keys(iconifyIcons).forEach((prefix) => {
+      Object.keys(exportIcons).forEach((prefix) => {
         const iconSetJson = ensureLoadIconSet(prefix, {
-          iconSets: iconifyJSONs,
+          iconSets,
         })
         const iconSet = new IconSet(iconSetJson)
-        const iconNames = iconifyIcons[prefix as keyof typeof iconifyIcons]
+        const iconNames = exportIcons[prefix as keyof typeof exportIcons]
         const css = getIconsCSS(
           iconSetJson,
           iconNames instanceof RegExp

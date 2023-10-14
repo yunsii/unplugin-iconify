@@ -19,8 +19,8 @@ export default defineConfig({
     unplugin({
       cssGenerators: [
         {
-          iconifyJSONs: localIconSets,
-          iconifyIcons: {
+          iconSets: localIconSets,
+          exportIcons: {
             bx: /./,
             // bx: /badge/,
             common: /./,
