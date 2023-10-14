@@ -6,7 +6,7 @@
 
 ## Features
 
-- ✨ `cssGenerators` - Easy to generate icons CSS as your expected
+- ✨ [`cssGenerators`](./src/types.ts#L4) - Easy to generate icons CSS as your expected
 
 ## Install
 
