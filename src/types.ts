@@ -41,7 +41,7 @@ export interface CssGenerator
    */
   iconSelector?: string
   /** icons CSS output path, under public directory in common. */
-  outputPath: string
+  outputPath: string | ((cssHash: string) => string)
 }
 
 export interface Options {

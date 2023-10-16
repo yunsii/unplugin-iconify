@@ -1,3 +1,5 @@
+import crypto from 'crypto'
+
 import { getIconsCSS } from '@iconify/utils'
 import fse from 'fs-extra'
 import pathe from 'pathe'
@@ -49,7 +51,17 @@ export function generateIconSetsCss(cssGenerator: CssGenerator) {
     }
   }
 
-  const normalizedPath = pathe.normalize(outputPath)
+  const getCssHash = () => {
+    return crypto
+      .createHash('md5')
+      .update(cssCode.replace(/[ \n\t]/g, ''), 'utf8')
+      .digest('hex')
+      .slice(0, 8)
+  }
+
+  const normalizedPath = pathe.normalize(
+    typeof outputPath === 'string' ? outputPath : outputPath(getCssHash()),
+  )
 
   fse.ensureDir(pathe.dirname(normalizedPath)).then(() => {
     fse.writeFile(normalizedPath, cssCode, 'utf-8')
