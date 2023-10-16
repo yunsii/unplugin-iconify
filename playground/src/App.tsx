@@ -1,16 +1,38 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { cls } from 'tagged-classnames-free'
+import { cssHash } from 'unplugin-iconify-css/test'
 
 import Icon from './components/Icon'
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const [iconClassNames, setIconClassNames] = useState<string[]>([])
+  const mountedRef = useRef(false)
+  const [cssMounted, setCssMounted] = useState(false)
 
   useEffect(() => {
+    if (mountedRef.current) {
+      return
+    }
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.href = `/icons-${cssHash}.css`
+    link.onload = () => {
+      setCssMounted(true)
+    }
+
+    document.head.insertAdjacentElement('afterbegin', link)
+
+    mountedRef.current = true
+  }, [])
+
+  useEffect(() => {
+    if (!cssMounted) {
+      return
+    }
     const iconClassNames: string[] = []
     Array.from(document.styleSheets).forEach((item) => {
-      if (item.href && item.href.endsWith('/icons.css')) {
+      if (item.href && item.href.endsWith(`/icons-${cssHash}.css`)) {
         for (let i = 0; i < item.cssRules.length; i++) {
           const cssRuleItem = item.cssRules.item(i)
           if (cssRuleItem instanceof CSSStyleRule) {
@@ -30,7 +52,7 @@ const App: React.FC = () => {
 
     setIconClassNames(iconClassNames)
     setLoading(false)
-  }, [])
+  }, [cssMounted])
 
   return (
     <div className={cls`p-2`}>

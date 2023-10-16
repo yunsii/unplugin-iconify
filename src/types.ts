@@ -1,8 +1,10 @@
 import type { IconCSSIconSetOptions } from '@iconify/utils/lib/css/types'
 import type { IconifyJSON } from '@iconify/types'
 
-export interface CssGenerator
+export interface CSSGenerator
   extends Pick<IconCSSIconSetOptions, 'iconSelector'> {
+  /** When you want to get runtime css hash, you must use `id` */
+  id?: string
   /** Add extra icon sets, non-official supported */
   iconSets?: Record<string, IconifyJSON>
   /**
@@ -45,6 +47,10 @@ export interface CssGenerator
 }
 
 export interface Options {
+  /**
+   * Debug mode, default `false`
+   */
+  debug?: boolean
   /** Iconify icon sets CSS generator */
-  cssGenerators?: CssGenerator[]
+  cssGenerators?: CSSGenerator[]
 }

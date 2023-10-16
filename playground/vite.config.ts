@@ -17,17 +17,21 @@ export default defineConfig({
     }),
     inspect(),
     unplugin({
+      debug: true,
       cssGenerators: [
         {
+          id: 'test',
           iconSets: localIconSets,
           exportIcons: {
-            bx: /./,
-            // bx: /badge/,
+            // bx: /./,
+            bx: /badge/,
             common: /./,
             test: /./,
           },
           iconSelector: '.i-{prefix}--{name}',
-          outputPath: path.join(__dirname, 'public', 'icons.css'),
+          outputPath: (cssHash) => {
+            return path.join(__dirname, 'public', `icons-${cssHash}.css`)
+          },
         },
       ],
     }),

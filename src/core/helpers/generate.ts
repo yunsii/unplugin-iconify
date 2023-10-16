@@ -5,13 +5,23 @@ import fse from 'fs-extra'
 import pathe from 'pathe'
 import { IconSet } from '@iconify/tools'
 
+import { logger } from '../log'
+
 import { ensureLoadIconSet } from './loader'
 
 import type { IconCSSIconSetOptions } from '@iconify/utils/lib/css/types'
-import type { CssGenerator } from '../types'
+import type { CSSGenerator } from '../../types'
 
-export function generateIconSetsCss(cssGenerator: CssGenerator) {
+export interface GenerateIconSetsCSSOptions {
+  onCssHashGenerated?: (cssHash: string) => void
+}
+
+export async function generateIconSetsCss(
+  cssGenerator: CSSGenerator,
+  options?: GenerateIconSetsCSSOptions,
+) {
   const { iconSets = {}, exportIcons, iconSelector, outputPath } = cssGenerator
+  const { onCssHashGenerated } = options || {}
 
   const getIconsCSSOptions: IconCSSIconSetOptions = {
     iconSelector,
@@ -52,18 +62,23 @@ export function generateIconSetsCss(cssGenerator: CssGenerator) {
   }
 
   const getCssHash = () => {
-    return crypto
+    const cssHash = crypto
       .createHash('md5')
       .update(cssCode.replace(/[ \n\t]/g, ''), 'utf8')
       .digest('hex')
       .slice(0, 8)
+    onCssHashGenerated?.(cssHash)
+
+    logger.debug('generateIconSetsCss cssHash', cssHash)
+
+    return cssHash
   }
 
   const normalizedPath = pathe.normalize(
     typeof outputPath === 'string' ? outputPath : outputPath(getCssHash()),
   )
 
-  fse.ensureDir(pathe.dirname(normalizedPath)).then(() => {
-    fse.writeFile(normalizedPath, cssCode, 'utf-8')
-  })
+  await fse.ensureDir(pathe.dirname(normalizedPath))
+  logger.debug('css output path', normalizedPath)
+  await fse.writeFile(normalizedPath, cssCode, 'utf-8')
 }
