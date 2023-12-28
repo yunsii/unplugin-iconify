@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 
-import { getIconsCSS } from '@iconify/utils'
+import { getIconCSS, getIconData } from '@iconify/utils'
 import fse from 'fs-extra'
 import pathe from 'pathe'
 import { IconSet } from '@iconify/tools'
@@ -9,7 +9,6 @@ import { logger } from '../log'
 
 import { ensureLoadIconSet } from './loader'
 
-import type { IconCSSIconSetOptions } from '@iconify/utils/lib/css/types'
 import type { CSSGenerator } from '../../types'
 
 export interface GenerateIconSetsCSSOptions {
@@ -23,22 +22,25 @@ export async function generateIconSetsCss(
   const { iconSets = {}, exportIcons, iconSelector, outputPath } = cssGenerator
   const { onCssHashGenerated } = options || {}
 
-  const getIconsCSSOptions: IconCSSIconSetOptions = {
-    iconSelector,
-  }
-
   let cssCode = ''
 
   if (exportIcons) {
     if (Array.isArray(exportIcons)) {
       exportIcons.forEach((prefix) => {
-        const iconSet = ensureLoadIconSet(prefix, { iconSets })
-        const css = getIconsCSS(
-          iconSet,
-          Object.keys(iconSet.icons),
-          getIconsCSSOptions,
-        )
-        cssCode += css
+        const iconSetJson = ensureLoadIconSet(prefix, { iconSets })
+        const iconSet = new IconSet(iconSetJson)
+
+        iconSet.list(['icon', 'variation', 'alias']).forEach((item) => {
+          const targetIconifyIcon = getIconData(iconSetJson, item)
+          if (!targetIconifyIcon) {
+            return
+          }
+          cssCode += getIconCSS(targetIconifyIcon, {
+            iconSelector: iconSelector
+              ?.replace('{prefix}', iconSet.prefix)
+              .replace('{name}', item),
+          })
+        })
       })
     } else {
       Object.keys(exportIcons).forEach((prefix) => {
@@ -47,16 +49,23 @@ export async function generateIconSetsCss(
         })
         const iconSet = new IconSet(iconSetJson)
         const iconNames = exportIcons[prefix as keyof typeof exportIcons]
-        const css = getIconsCSS(
-          iconSetJson,
+        const exportIconNames =
           iconNames instanceof RegExp
-            ? iconSet.list(['icon', 'variation']).filter((item) => {
+            ? iconSet.list(['icon', 'variation', 'alias']).filter((item) => {
                 return iconNames.test(item)
               })
-            : iconNames,
-          getIconsCSSOptions,
-        )
-        cssCode += css
+            : iconNames
+        exportIconNames.forEach((item) => {
+          const targetIconifyIcon = getIconData(iconSetJson, item)
+          if (!targetIconifyIcon) {
+            return
+          }
+          cssCode += getIconCSS(targetIconifyIcon, {
+            iconSelector: iconSelector
+              ?.replace('{prefix}', iconSet.prefix)
+              .replace('{name}', item),
+          })
+        })
       })
     }
   }
