@@ -22,7 +22,7 @@ export interface CSSGenerator
    * {
    *   "bx": ["badge", "brightness"]
    *   "bxs": ["badge", "brightness"]
-   *   "bxs": "*"
+   *   "bxs": /./
    * }
    * ```
    *
@@ -31,7 +31,7 @@ export interface CSSGenerator
    * ```ts
    * {
    *   "bx": ["badge", "brightness"]
-   *   "bxs": "*"
+   *   "bxs": /./
    * }
    * ```
    */
@@ -51,6 +51,10 @@ export interface Options {
    * Debug mode, default `false`
    */
   debug?: boolean
-  /** Iconify icon sets CSS generator */
+  /**
+   * Iconify icon sets CSS generator
+   *
+   * Generate corresponding CSS file for every config item.
+   */
   cssGenerators?: CSSGenerator[]
 }
